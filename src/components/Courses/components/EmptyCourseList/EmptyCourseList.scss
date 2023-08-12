@@ -1,0 +1,12 @@
+.course-empty {
+    text-align: center;
+
+    &__title {
+        font-size: 3.2rem;
+    }
+
+    &__message {
+        font-size: 1.6rem;
+        margin: 2.2rem 4rem;
+    }
+}
