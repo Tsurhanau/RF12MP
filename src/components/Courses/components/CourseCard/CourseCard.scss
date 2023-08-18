@@ -1,0 +1,45 @@
+.card {
+    padding: 2rem 4rem 3rem 3rem;
+    background: #FFF;
+    margin-bottom: 3.3rem;
+
+    &__title {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    &__content {
+        display: flex;
+        
+    }
+
+    &__text {
+        max-width: 67.7rem;
+        font-size: 1.6rem;
+        margin-right: 4.7rem;
+    }
+
+    &__section-1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    &__buttons {
+        display: flex;
+        gap: 1.1rem;
+    }
+
+    &__info {
+        font-size: 1.6rem;
+        list-style-type: none;
+        padding-left: 0;
+        white-space: nowrap;
+        width: 38rem;
+
+        li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}

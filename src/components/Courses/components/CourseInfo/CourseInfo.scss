@@ -1,0 +1,42 @@
+.course-info {
+    &__title {
+        font-size: 3.2rem;
+    }
+
+    &__container {
+        background: #FFF;
+        display: flex;
+        padding: 6rem;
+    }
+
+    &__section-1 {
+        font-size: 1.6rem;
+    }
+
+    &__section-2 {
+        font-size: 1.6rem;
+        list-style-type: none;
+        padding-left: 0;
+        white-space: nowrap;
+        width: 38rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin-left: 2rem;
+
+        li {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__text {
+        margin-top: 2.5rem;
+    }
+
+    &__button {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4.6rem;
+    }
+}

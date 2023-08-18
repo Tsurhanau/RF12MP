@@ -1,0 +1,11 @@
+.input {
+    &__field {
+        border-radius: 0.4rem;
+        border: 1px solid #CFCFCF;
+        background: var(--white, #FFF);
+        width: 40rem;
+        height: 5rem;
+        padding: 1.3rem 1.6rem;
+        font-size: 1.6rem;
+    }
+}
