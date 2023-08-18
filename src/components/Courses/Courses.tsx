@@ -5,6 +5,8 @@ import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourseList';
 import { useState } from 'react';
 import { CourseInfo } from './components/CourseInfo/CourseInfo';
 import { SearchBar } from 'src/common/SearchBar/SearchBar';
+import { Button } from 'src/common/Button/Button';
+import { BUTTON_TEXT } from 'src/shared/constants/button';
 
 export function Courses({ courses }: CourseProps): JSX.Element {
 	const [coursesList, setCoursesList] = useState(courses);
@@ -53,10 +55,13 @@ export function Courses({ courses }: CourseProps): JSX.Element {
 		);
 	}
 
+	const addNewCourse = () => console.log('addNewCourse');
+
 	return (
 		<div className='courses'>
 			<div className='courses__section-1'>
 				<SearchBar onSubmitSearch={onSubmitSearch} />
+				<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
 			</div>
 			{showCourseInfo ? (
 				<CourseInfo

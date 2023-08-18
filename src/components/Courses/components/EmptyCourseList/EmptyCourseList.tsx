@@ -12,7 +12,7 @@ export function EmptyCourseList(): JSX.Element {
 		<div className='course-empty'>
 			<h4 className='course-empty__title'>{EMPTY_LIST.TITLE}</h4>
 			<p className='course-empty__message'>{EMPTY_LIST.MESSAGE}</p>
-			<Button text={BUTTON_TEXT.EMPTY_COURSES} onClick={addNewCourse} />
+			<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
 		</div>
 	);
 }

@@ -3,7 +3,7 @@ export const BUTTON_TEXT = {
 	SHOW_COURSE: 'ShowCourse',
 	EDIT: 'e',
 	DELETE: 'd',
-	EMPTY_COURSES: 'Add new course',
 	BACK: 'back',
 	SEARCH: 'search',
+	ADD_NEW_COURSE: 'add new course',
 };
