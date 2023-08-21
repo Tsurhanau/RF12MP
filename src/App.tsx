@@ -1,10 +1,10 @@
 import './App.scss';
 import { mockedCoursesList } from './assets/mocks/courses';
 import { Courses } from './components/Courses/Courses';
-import Header from './components/Header/Header';
+import { Header } from './components/Header/Header';
 import { Course } from './shared/models/course';
 
-function App() {
+export const App = () => {
 	const coursesList: Course[] = mockedCoursesList;
 
 	return (
@@ -19,6 +19,4 @@ function App() {
 			</div>
 		</div>
 	);
-}
-
-export default App;
+};

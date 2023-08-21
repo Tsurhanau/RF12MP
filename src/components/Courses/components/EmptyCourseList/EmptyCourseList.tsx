@@ -1,12 +1,13 @@
+import { FC, ReactElement } from 'react';
 import './EmptyCourseList.scss';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { EMPTY_LIST } from 'src/shared/constants/empty-list';
 
-export function EmptyCourseList(): JSX.Element {
-	function addNewCourse(): void {
+export const EmptyCourseList: FC = (): ReactElement => {
+	const addNewCourse = (): void => {
 		console.log('addNewCourse');
-	}
+	};
 
 	return (
 		<div className='course-empty'>
@@ -15,4 +16,4 @@ export function EmptyCourseList(): JSX.Element {
 			<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
 		</div>
 	);
-}
+};

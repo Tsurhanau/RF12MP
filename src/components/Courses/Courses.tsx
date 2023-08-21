@@ -2,27 +2,29 @@ import './Courses.scss';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { Course, CourseProps } from 'src/shared/models/course';
 import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourseList';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { CourseInfo } from './components/CourseInfo/CourseInfo';
 import { SearchBar } from 'src/common/SearchBar/SearchBar';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 
-export function Courses({ courses }: CourseProps): JSX.Element {
+export const Courses: React.FC<CourseProps> = ({
+	courses,
+}: CourseProps): ReactElement => {
 	const [coursesList, setCoursesList] = useState(courses);
 	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
 	const [selectedCourse, setSelectedCourse] = useState<Course>();
 
-	function openCourseInfo(card: Course): void {
+	const openCourseInfo = (card: Course): void => {
 		setShowCourseInfo(true);
 		setSelectedCourse(card);
-	}
+	};
 
-	function closeCourseInfo(): void {
+	const closeCourseInfo = (): void => {
 		setShowCourseInfo(false);
-	}
+	};
 
-	function onSubmitSearch(value: string): void {
+	const onSubmitSearch = (value: string): void => {
 		if (value) {
 			const lowerCaseValue = value.toLocaleLowerCase();
 			const result = courses.filter((course) => {
@@ -36,24 +38,21 @@ export function Courses({ courses }: CourseProps): JSX.Element {
 		} else {
 			setCoursesList(courses);
 		}
-	}
+	};
 
-	function renderCourseList(): JSX.Element {
-		if (courses.length === 0) {
-			return (
-				<div className='courses__empty-list'>
-					<EmptyCourseList />
-				</div>
-			);
-		}
-		return (
+	const renderCourseList = (): ReactElement => {
+		return courses.length === 0 ? (
+			<div className='courses__empty-list'>
+				<EmptyCourseList />
+			</div>
+		) : (
 			<div className='courses__container'>
 				{coursesList.map((card: Course) => (
 					<CourseCard key={card.id} card={card} openCardInfo={openCourseInfo} />
 				))}
 			</div>
 		);
-	}
+	};
 
 	const addNewCourse = () => console.log('addNewCourse');
 
@@ -73,4 +72,4 @@ export function Courses({ courses }: CourseProps): JSX.Element {
 			)}
 		</div>
 	);
-}
+};

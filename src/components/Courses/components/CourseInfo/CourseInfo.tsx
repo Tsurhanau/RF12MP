@@ -5,14 +5,15 @@ import { getCourseCreationDate } from 'src/helpers/getCourseCreationDate';
 import { getCourseAuthors } from 'src/helpers/getCourseAuthors';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
+import { FC, ReactElement } from 'react';
 
-export function CourseInfo({
+export const CourseInfo: FC<CourseInfoProps> = ({
 	selectedCourse,
 	moveBack,
-}: CourseInfoProps): JSX.Element {
-	function clickBack(): void {
+}: CourseInfoProps): ReactElement => {
+	const clickBack = (): void => {
 		moveBack();
-	}
+	};
 
 	return (
 		<div className='course-info'>
@@ -34,4 +35,4 @@ export function CourseInfo({
 			</div>
 		</div>
 	);
-}
+};

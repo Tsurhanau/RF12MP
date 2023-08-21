@@ -1,13 +1,13 @@
 import { Logo } from 'src/common/Logo/Logo';
 import './Header.scss';
-import React from 'react';
+import { FC, ReactElement } from 'react';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 
-export function Header(): JSX.Element {
-	function login(): void {
+export const Header: FC = (): ReactElement => {
+	const login = (): void => {
 		console.log('login event');
-	}
+	};
 
 	return (
 		<header className='header'>
@@ -19,6 +19,4 @@ export function Header(): JSX.Element {
 			</div>
 		</header>
 	);
-}
-
-export default Header;
+};
