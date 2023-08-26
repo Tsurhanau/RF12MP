@@ -1,9 +1,21 @@
 import { FC } from 'react';
 import './Button.scss';
-import { ButtonProps } from 'src/shared/models/button';
+import { CustomButtonProps } from 'src/shared/models/button';
 
-export const Button: FC<ButtonProps> = ({ text, onClick }) => (
-	<button className='button' onClick={onClick}>
+export const Button: FC<CustomButtonProps> = ({
+	text,
+	onClick,
+	style,
+	type,
+	...rest
+}) => (
+	<button
+		className='button'
+		style={style}
+		onClick={onClick}
+		type={type}
+		{...rest}
+	>
 		<span>{text}</span>
 	</button>
 );

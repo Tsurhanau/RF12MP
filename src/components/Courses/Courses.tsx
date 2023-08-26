@@ -3,25 +3,21 @@ import { CourseCard } from './components/CourseCard/CourseCard';
 import { Course, CourseProps } from 'src/shared/models/course';
 import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourseList';
 import { ReactElement, useState } from 'react';
-import { CourseInfo } from './components/CourseInfo/CourseInfo';
 import { SearchBar } from 'src/common/SearchBar/SearchBar';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from 'src/shared/enums/router';
 
 export const Courses: React.FC<CourseProps> = ({
 	courses,
 }: CourseProps): ReactElement => {
+	const navigate = useNavigate();
+
 	const [coursesList, setCoursesList] = useState(courses);
-	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
-	const [selectedCourse, setSelectedCourse] = useState<Course>();
 
 	const openCourseInfo = (card: Course): void => {
-		setShowCourseInfo(true);
-		setSelectedCourse(card);
-	};
-
-	const closeCourseInfo = (): void => {
-		setShowCourseInfo(false);
+		navigate(`${RoutePath.Courses}/${card.id}`);
 	};
 
 	const onSubmitSearch = (value: string): void => {
@@ -54,7 +50,9 @@ export const Courses: React.FC<CourseProps> = ({
 		);
 	};
 
-	const addNewCourse = () => console.log('addNewCourse');
+	const addNewCourse = (): void => {
+		navigate(`${RoutePath.Courses}/add`);
+	};
 
 	return (
 		<div className='courses'>
@@ -62,14 +60,7 @@ export const Courses: React.FC<CourseProps> = ({
 				<SearchBar onSubmitSearch={onSubmitSearch} />
 				<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
 			</div>
-			{showCourseInfo ? (
-				<CourseInfo
-					selectedCourse={selectedCourse!}
-					moveBack={closeCourseInfo}
-				/>
-			) : (
-				renderCourseList()
-			)}
+			{renderCourseList()}
 		</div>
 	);
 };

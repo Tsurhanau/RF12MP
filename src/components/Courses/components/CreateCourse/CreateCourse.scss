@@ -1,0 +1,140 @@
+%request-result {
+    position: absolute;
+    font-size: 1.6rem;
+    bottom: 1rem;
+}
+
+.create-course {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #F7F7F7;
+
+    &__title {
+        font-size: 2.2rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 4rem;
+        text-transform: capitalize;
+        margin: 6rem 0 3rem;
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    &__buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 2rem;
+        margin-bottom: 5rem;
+    }
+}
+
+.form {
+    display: flex;
+    width: 100%;
+    min-height: 55.8rem;
+    border-radius: 4px;
+    border: 1px solid #CFCFCF;
+    background: #FFF;
+    flex-direction: column;
+    align-items:  flex-start;;
+    justify-content: space-between;
+    position: relative;
+    padding: 2rem 6rem;
+    margin-bottom: 1rem;
+
+    &__sub-title {
+        font-size: 2.1rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 3.2rem;
+        padding: 1rem 0 2rem
+    }
+
+    &__message {
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 2rem;        
+    }
+
+    &__link {
+        text-decoration: none;
+        font-weight: 700;
+        text-align: center
+    }
+
+    &__request-result {
+
+        &_success {
+            @extend %request-result;
+            color: green;
+        }
+
+        &_fail {
+            @extend %request-result;
+            color: red;
+        }
+    }
+}
+
+.main {
+    width: 100%;
+    height: 36rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.duration {
+    height: 11.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__container{
+        display: flex;
+        align-items: center;
+    }
+    
+    &__time {
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 2rem;
+        margin-left: 1.6rem;
+    }
+}
+
+.authors {
+    margin-top: 3rem;
+    display: flex;
+    width: 100%;
+
+    &__block-1 {
+
+    }
+
+    &__form {
+        display: flex;
+        width: 63rem;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    &__list {
+        margin-top: 1rem;
+    }
+
+    &__block-2 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__courses {
+
+    }
+}

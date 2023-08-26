@@ -17,6 +17,6 @@ export interface CourseCardProps {
 }
 
 export interface CourseInfoProps {
-	selectedCourse: Course;
-	moveBack: () => void;
+	selectedCourse?: Course;
+	moveBack?: () => void;
 }

@@ -1,4 +1,4 @@
-%input {
+%textarea {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -11,10 +11,12 @@
     height: 5rem;
     padding: 1.3rem 1.6rem;
     font-size: 1.6rem;
+    max-height: 15rem;
+    resize: vertical;
 }
 
-.input {
-    @extend %input;
+.textarea {
+    @extend %textarea;
 
     &__label {
         color: black;
@@ -48,7 +50,7 @@
     }
 
     &_error {
-        @extend %input;
+        @extend %textarea;
         color: red;
     }
 }
