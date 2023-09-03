@@ -11,23 +11,12 @@ import { CustomResponseResult } from 'src/shared/models/http';
 import { RoutePath } from 'src/shared/enums/router';
 import { user } from 'src/assets/mocks/user';
 import { User } from 'src/shared/models/user';
-import * as Yup from 'yup';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-
-const validationLoginSchema = Yup.object().shape({
-	email: Yup.string().email('Invalid email').required('Email is required'),
-	password: Yup.string().required('Password is required'),
-});
-
-interface FormLoginValues {
-	email: string;
-	password: string;
-}
-
-const initialValues: FormLoginValues = {
-	email: '',
-	password: '',
-};
+import {
+	FormLoginValues,
+	initialValues,
+	validationLoginSchema,
+} from 'src/shared/models/login';
 
 export const Login: FC = (): ReactElement => {
 	const navigate = useNavigate();
