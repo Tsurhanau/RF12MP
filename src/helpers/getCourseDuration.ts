@@ -1,4 +1,14 @@
-export function getCourseDuration(minutes: number): string {
+export const INITIAL_DURATION = 0;
+
+export const getCourseDuration = (minutes: number): string => {
+	if (Number.isNaN(minutes)) {
+		return '';
+	}
+
+	if (minutes === INITIAL_DURATION) {
+		return '00:00 hours';
+	}
+
 	const hours = Math.floor(minutes / 60);
 	const mins = minutes % 60;
 
@@ -14,4 +24,4 @@ export function getCourseDuration(minutes: number): string {
 	} else {
 		return `${formattedMins} minutes`;
 	}
-}
+};

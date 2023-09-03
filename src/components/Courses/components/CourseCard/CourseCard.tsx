@@ -5,22 +5,23 @@ import { CourseCardProps } from 'src/shared/models/course';
 import { getCourseDuration } from 'src/helpers/getCourseDuration';
 import { getCourseAuthors } from 'src/helpers/getCourseAuthors';
 import { getCourseCreationDate } from 'src/helpers/getCourseCreationDate';
+import { FC, ReactElement } from 'react';
 
-export function CourseCard({
+export const CourseCard: FC<CourseCardProps> = ({
 	card,
 	openCardInfo,
-}: CourseCardProps): JSX.Element {
-	function showCourse(): void {
+}: CourseCardProps): ReactElement => {
+	const showCourse = (): void => {
 		openCardInfo(card);
-	}
+	};
 
-	function editCourse(): void {
+	const editCourse = (): void => {
 		console.log('editCourse');
-	}
+	};
 
-	function deleteCourse(): void {
+	const deleteCourse = (): void => {
 		console.log('deleteCourse');
-	}
+	};
 
 	return (
 		<div className='card'>
@@ -44,4 +45,4 @@ export function CourseCard({
 			</div>
 		</div>
 	);
-}
+};

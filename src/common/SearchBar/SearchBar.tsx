@@ -1,20 +1,22 @@
 import './SearchBar.scss';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { Button } from '../Button/Button';
-import Input from '../Input/Input';
+import { Input } from '../Input/Input';
 import { SearchBarProps } from 'src/shared/models/searchBar';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
-export function SearchBar({ onSubmitSearch }: SearchBarProps): JSX.Element {
+export const SearchBar: FC<SearchBarProps> = ({
+	onSubmitSearch,
+}: SearchBarProps) => {
 	const [inputValue, setInputValue] = useState<string>('');
 
-	function changeInput(value: string) {
+	const changeInput = (value: string): void => {
 		setInputValue(value);
-	}
+	};
 
-	function search() {
+	const search = (): void => {
 		onSubmitSearch(inputValue);
-	}
+	};
 
 	return (
 		<div className='search-bar'>
@@ -26,4 +28,4 @@ export function SearchBar({ onSubmitSearch }: SearchBarProps): JSX.Element {
 			</div>
 		</div>
 	);
-}
+};

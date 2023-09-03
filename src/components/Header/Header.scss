@@ -6,4 +6,11 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.15);
+
+    &__login-section {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        font-size: 1.4rem;
+    }
 }

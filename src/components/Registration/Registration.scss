@@ -1,0 +1,60 @@
+%request-result {
+    position: absolute;
+    font-size: 1.6rem;
+    bottom: 1rem;
+}
+
+.registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #F7F7F7;
+    height: 100vh;
+
+    &__title {
+        font-size: 3.2rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 4rem;
+        text-transform: capitalize;
+        margin: 10rem 0 3rem;
+    }
+}
+
+.form-registration {
+    display: flex;
+    width: 58.5rem;
+    height: 55.8rem;
+    border-radius: 4px;
+    border: 1px solid #CFCFCF;
+    background: #FFF;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: relative;
+
+    &__message {
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 2rem;        
+    }
+
+    &__link {
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    &__request-result {
+
+        &_success {
+            @extend %request-result;
+            color: green;
+        }
+
+        &_fail {
+            @extend %request-result;
+            color: red;
+        }
+    }
+}

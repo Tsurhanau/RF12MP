@@ -1,5 +1,4 @@
-import React from 'react';
-
+import { FC } from 'react';
 import logo from '../../assets/images/logo.svg';
 
-export const Logo: React.FC = () => <img src={logo} />;
+export const Logo: FC = () => <img alt='courses logo' src={logo} />;

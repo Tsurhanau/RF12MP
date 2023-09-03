@@ -1,19 +1,29 @@
 import './Input.scss';
-import React, { ChangeEvent } from 'react';
-import { InputProps } from 'src/shared/models/input';
+import { ChangeEvent, FC } from 'react';
+import { CustomInputProps } from 'src/shared/models/input';
 
-const Input: React.FC<InputProps> = ({ label, onInputChange, ...rest }) => {
+export const Input: FC<CustomInputProps> = ({
+	label,
+	onInputChange,
+	error,
+	style,
+	...rest
+}) => {
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 		onInputChange(value);
 	};
 
 	return (
-		<div className='input'>
-			<label className='input__label'>{label}</label>
-			<input className='input__field' onChange={handleChange} {...rest} />
+		<div className={`${error ? 'input_error' : 'input'}`}>
+			{label && <label className='input__label'>{label}</label>}
+			<input
+				className={`${error ? 'input__field_error' : 'input__field'}`}
+				onChange={handleChange}
+				style={style}
+				{...rest}
+			/>
+			{error && <div className='input__message_error'>{error}</div>}
 		</div>
 	);
 };
-
-export default Input;
