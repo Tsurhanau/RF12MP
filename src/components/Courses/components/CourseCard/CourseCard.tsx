@@ -6,11 +6,18 @@ import { getCourseDuration } from 'src/helpers/getCourseDuration';
 import { getCourseAuthors } from 'src/helpers/getCourseAuthors';
 import { getCourseCreationDate } from 'src/helpers/getCourseCreationDate';
 import { FC, ReactElement } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeCourses } from 'src/store/courses/actions';
+import { getAuthors } from 'src/store/authors/selectors';
 
 export const CourseCard: FC<CourseCardProps> = ({
 	card,
 	openCardInfo,
 }: CourseCardProps): ReactElement => {
+	const authors = useSelector(getAuthors);
+
+	const dispatch = useDispatch();
+
 	const showCourse = (): void => {
 		openCardInfo(card);
 	};
@@ -20,7 +27,7 @@ export const CourseCard: FC<CourseCardProps> = ({
 	};
 
 	const deleteCourse = (): void => {
-		console.log('deleteCourse');
+		dispatch(removeCourses(card.id));
 	};
 
 	return (
@@ -32,7 +39,7 @@ export const CourseCard: FC<CourseCardProps> = ({
 				<p className='card__text'>{card.description}</p>
 				<div className='card__section-1'>
 					<ul className='card__info'>
-						<li>Authors: {getCourseAuthors(card.authors)}</li>
+						<li>Authors: {getCourseAuthors(card.authors, authors)}</li>
 						<li>Duration: {getCourseDuration(card.duration)}</li>
 						<li>Created: {getCourseCreationDate(card.creationDate)}</li>
 					</ul>

@@ -4,4 +4,6 @@ export const user: User = {
 	name: 'Harry Potter',
 	isAdmin: false,
 	isLogin: true,
+	email: '',
+	token: '',
 };

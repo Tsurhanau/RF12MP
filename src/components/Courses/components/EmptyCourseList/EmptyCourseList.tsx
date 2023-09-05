@@ -5,10 +5,14 @@ import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { EMPTY_LIST } from 'src/shared/constants/empty-list';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from 'src/shared/enums/router';
-import { user } from 'src/assets/mocks/user';
+import { useSelector } from 'react-redux';
+import { getUser } from 'src/store/user/selectors';
 
 export const EmptyCourseList: FC = (): ReactElement => {
 	const navigate = useNavigate();
+
+	const user = useSelector(getUser);
+
 	const addNewCourse = (): void => {
 		navigate(`${RoutePath.Courses}/add`);
 	};

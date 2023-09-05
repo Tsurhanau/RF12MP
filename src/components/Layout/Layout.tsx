@@ -4,16 +4,22 @@ import { Header } from '../Header/Header';
 import { LayoutProps } from 'src/shared/models/layout';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from 'src/shared/enums/router';
-import { user } from 'src/assets/mocks/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from 'src/store/user/selectors';
+import { logout } from 'src/store/user/actions';
 
 export const Layout: FC<LayoutProps> = ({ children }): ReactElement => {
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
+
+	const user = useSelector(getUser);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (!token) {
 			navigate(RoutePath.Login, { replace: true });
-			user.isLogin = false;
+			dispatch(logout());
 		}
 	}, []);
 

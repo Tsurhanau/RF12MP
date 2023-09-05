@@ -17,9 +17,13 @@ import {
 	initialValues,
 	validationLoginSchema,
 } from 'src/shared/models/login';
+import { useDispatch } from 'react-redux';
+import { addUser } from 'src/store/user/actions';
 
 export const Login: FC = (): ReactElement => {
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
 
 	const [requestResult, setRequestResult] =
 		useState<CustomResponseResult>(noneCRR);
@@ -54,8 +58,15 @@ export const Login: FC = (): ReactElement => {
 	};
 
 	const defineUserData = (currentUser: User) => {
-		user.name = currentUser.name;
-		user.isLogin = true;
+		const user = {
+			name: currentUser.name,
+			isAdmin: true,
+			isLogin: true,
+			email: currentUser.email,
+			token: currentUser.token,
+		};
+
+		dispatch(addUser(user));
 	};
 
 	const customButtonStyle: CSSProperties = {
