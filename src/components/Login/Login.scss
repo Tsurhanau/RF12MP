@@ -19,6 +19,12 @@
         text-transform: capitalize;
         margin: 10rem 0 3rem;
     }
+
+    &__response {
+        position: absolute;
+        top: 120px;
+        width: 100%;
+    }
 }
 
 .form-login {
@@ -32,6 +38,11 @@
     align-items: center;
     justify-content: space-evenly;
     position: relative;
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+    }
 
     &__message {
         font-size: 1.6rem;
@@ -57,5 +68,31 @@
             @extend %request-result;
             color: red;
         }
+    }
+
+    &__input {
+        width: 40rem;
+        height: 5rem;
+        padding: 1.3rem 1.6rem;
+        font-size: 1.6rem;
+        border-radius: 0.4rem;
+        border: 0.1rem solid #CFCFCF;
+
+    }
+
+    &__label {
+        color: black;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 2rem;
+    }
+
+    &__error {
+        color: red;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 2rem;
     }
 }

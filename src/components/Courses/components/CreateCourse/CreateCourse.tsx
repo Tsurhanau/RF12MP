@@ -20,10 +20,17 @@ import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { hasMinLength } from 'src/helpers/hasMinLength';
 import { Course } from 'src/shared/models/course';
 import { getCurrentDate } from 'src/helpers/getCurrentDate';
-import { mockedAuthorsList, mockedCoursesList } from 'src/assets/mocks/courses';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthors } from 'src/store/authors/selectors';
+import { addAuthor } from 'src/store/authors/actions';
+import { addCourse } from 'src/store/courses/actions';
 
 export const CreateCourse: FC = (): ReactElement => {
 	const navigate = useNavigate();
+
+	const authorsAll = useSelector(getAuthors);
+
+	const dispatch = useDispatch();
 
 	const [durationValue, setDurationValue] = useState(
 		getCourseDuration(INITIAL_DURATION)
@@ -88,8 +95,10 @@ export const CreateCourse: FC = (): ReactElement => {
 				id: nextId(),
 				name: authorName,
 			};
-			setAuthors([...authors, newAuthor]);
+			dispatch(addAuthor(newAuthor));
 			setAuthorName('');
+		} else {
+			validateAuthorName();
 		}
 	};
 
@@ -97,22 +106,26 @@ export const CreateCourse: FC = (): ReactElement => {
 		const isAuthorNameValidLength = hasMinLength(authorName, 2);
 
 		if (!authorName || !isAuthorNameValidLength) {
-			!authorName
-				? setAuthorNameError('Author name is required')
-				: setAuthorNameError(
-						'Author name length should be at least 2 characters'
-				  );
-
 			return false;
 		}
 
 		return true;
 	};
 
+	const validateAuthorName = (): void => {
+		!authorName
+			? setAuthorNameError('Author name is required')
+			: setAuthorNameError(
+					'Author name length should be at least 2 characters'
+			  );
+	};
+
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		if (isFormValid()) {
+		const isFormValidate = isFormValid();
+
+		if (isFormValidate) {
 			const course: Course = {
 				id: nextId(),
 				title: title,
@@ -122,11 +135,11 @@ export const CreateCourse: FC = (): ReactElement => {
 				authors: courseAuthors.map((courseAuthor) => courseAuthor.id),
 			};
 
-			courseAuthors.forEach((author) => mockedAuthorsList.push(author));
-
-			mockedCoursesList.push(course);
+			dispatch(addCourse(course));
 
 			navigate(RoutePath.Courses, { replace: true });
+		} else {
+			setFormErrors();
 		}
 	};
 
@@ -134,52 +147,74 @@ export const CreateCourse: FC = (): ReactElement => {
 		const isTitleValidLength = hasMinLength(title, 2);
 
 		if (!title || !isTitleValidLength) {
-			!title
-				? setTitleError('Title is required')
-				: setTitleError('Title length should be at least 2 characters');
-
 			return false;
 		}
 
 		return true;
+	};
+
+	const validateTitle = () => {
+		!title
+			? setTitleError('Title is required')
+			: setTitleError('Title length should be at least 2 characters');
 	};
 
 	const isDescriptionValid = (): boolean => {
 		const isDescriptionValidLength = hasMinLength(description, 2);
 
 		if (!description || !isDescriptionValidLength) {
-			!description
-				? setDescriptionError('Description is required')
-				: setDescriptionError(
-						'Description length should be at least 2 characters'
-				  );
-
 			return false;
 		}
 
 		return true;
+	};
+
+	const validateDescription = () => {
+		!description
+			? setDescriptionError('Description is required')
+			: setDescriptionError(
+					'Description length should be at least 2 characters'
+			  );
 	};
 
 	const isDurationValid = (): boolean => {
 		const isDurationValidLength = hasMinLength(duration, 2);
 
 		if (!duration || !isDurationValidLength) {
-			!duration
-				? setDurationError('Duration is required')
-				: setDurationError('Duration length should be at least 2 characters');
-
 			return false;
 		}
 
 		return true;
 	};
 
+	const validateDuration = () => {
+		!duration
+			? setDurationError('Duration is required')
+			: setDurationError('Duration length should be at least 2 characters');
+	};
+
 	const isFormValid = (): boolean => {
+		return isDurationValid() && isDescriptionValid() && isTitleValid();
+	};
+
+	const setFormErrors = (): void => {
 		const isDurationFieldValid = isDurationValid();
+
+		if (!isDurationFieldValid) {
+			validateDuration();
+		}
+
 		const isDescriptionFieldValid = isDescriptionValid();
+
+		if (!isDescriptionFieldValid) {
+			validateDescription();
+		}
+
 		const isTitleFieldValid = isTitleValid();
 
-		return isDurationFieldValid && isDescriptionFieldValid && isTitleFieldValid;
+		if (!isTitleFieldValid) {
+			validateTitle();
+		}
 	};
 
 	const addAuthorToCourse = (
@@ -284,7 +319,7 @@ export const CreateCourse: FC = (): ReactElement => {
 					</div>
 					<div className='authors__list'>
 						<div className='form__sub-title'>Authors List</div>
-						{renderAuthorList(authors)}
+						{renderAuthorList(authorsAll)}
 					</div>
 				</div>
 				<div className='authors__block-2'>

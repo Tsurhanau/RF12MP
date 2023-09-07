@@ -7,12 +7,17 @@ import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { FC, ReactElement, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { mockedCoursesList } from 'src/assets/mocks/courses';
 import { RoutePath } from 'src/shared/enums/router';
 import { COURSES } from 'src/shared/constants/couses';
+import { getAuthors } from 'src/store/authors/selectors';
+import { useSelector } from 'react-redux';
+import { getCourses } from 'src/store/courses/selectors';
 
 export const CourseInfo: FC = (): ReactElement => {
 	const params = useParams();
+
+	const authors = useSelector(getAuthors);
+	const courses = useSelector(getCourses);
 
 	const navigate = useNavigate();
 
@@ -20,7 +25,7 @@ export const CourseInfo: FC = (): ReactElement => {
 		if (!id) {
 			return null;
 		}
-		return mockedCoursesList.find((course) => course.id === id) ?? null;
+		return courses.find((course) => course.id === id) ?? null;
 	};
 
 	const [course, setCourse] = useState(getCourseById(params.courseId));
@@ -41,7 +46,7 @@ export const CourseInfo: FC = (): ReactElement => {
 					<li>Id: {course.id}</li>
 					<li>Duration: {getCourseDuration(course.duration)}</li>
 					<li>Created: {getCourseCreationDate(course.creationDate)}</li>
-					<li>Authors: {getCourseAuthors(course.authors)}</li>
+					<li>Authors: {getCourseAuthors(course.authors, authors)}</li>
 				</ul>
 			</div>
 			<div className='course-info__button'>

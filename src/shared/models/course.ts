@@ -8,7 +8,7 @@ export interface Course {
 }
 
 export interface CourseProps {
-	courses: Course[];
+	courses?: Course[];
 }
 
 export interface CourseCardProps {

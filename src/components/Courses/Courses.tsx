@@ -14,7 +14,7 @@ export const Courses: React.FC<CourseProps> = ({
 }: CourseProps): ReactElement => {
 	const navigate = useNavigate();
 
-	const [coursesList, setCoursesList] = useState(courses);
+	const [filterCourses, setFilterCourses] = useState<Course[] | null>(null);
 
 	const openCourseInfo = (card: Course): void => {
 		navigate(`${RoutePath.Courses}/${card.id}`);
@@ -23,29 +23,41 @@ export const Courses: React.FC<CourseProps> = ({
 	const onSubmitSearch = (value: string): void => {
 		if (value) {
 			const lowerCaseValue = value.toLocaleLowerCase();
-			const result = courses.filter((course) => {
+			const result = courses?.filter((course: Course) => {
 				return (
 					course.title.toLocaleLowerCase().includes(lowerCaseValue) ||
 					course.id.toLocaleLowerCase().includes(lowerCaseValue)
 				);
 			});
 
-			setCoursesList(result);
+			setFilterCourses(result ?? null);
 		} else {
-			setCoursesList(courses);
+			setFilterCourses(null);
 		}
 	};
 
 	const renderCourseList = (): ReactElement => {
-		return courses.length === 0 ? (
+		return courses?.length === 0 ? (
 			<div className='courses__empty-list'>
 				<EmptyCourseList />
 			</div>
 		) : (
 			<div className='courses__container'>
-				{coursesList.map((card: Course) => (
-					<CourseCard key={card.id} card={card} openCardInfo={openCourseInfo} />
-				))}
+				{filterCourses
+					? filterCourses?.map((card: Course) => (
+							<CourseCard
+								key={card.id}
+								card={card}
+								openCardInfo={openCourseInfo}
+							/>
+					  ))
+					: courses?.map((card: Course) => (
+							<CourseCard
+								key={card.id}
+								card={card}
+								openCardInfo={openCourseInfo}
+							/>
+					  ))}
 			</div>
 		);
 	};

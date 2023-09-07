@@ -6,9 +6,13 @@ import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { HeaderProps } from 'src/shared/models/header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RoutePath } from 'src/shared/enums/router';
+import { useDispatch } from 'react-redux';
+import { logout as userLogout } from 'src/store/user/actions';
 
 export const Header: FC<HeaderProps> = ({ user }): ReactElement => {
 	const navigate = useNavigate();
+
+	const dispatch = useDispatch();
 
 	const location = useLocation();
 
@@ -17,9 +21,10 @@ export const Header: FC<HeaderProps> = ({ user }): ReactElement => {
 	};
 
 	const logout = (): void => {
-		user.isLogin = false;
 		localStorage.removeItem('token');
 		navigate(RoutePath.Login, { replace: true });
+
+		dispatch(userLogout());
 	};
 
 	const renderNameSection = (): ReactElement => {

@@ -1,0 +1,5 @@
+export enum ActionTypes {
+	LOAD_AUTHORS = 'LOAD_AUTHORS',
+	DELETE_AUTHOR = 'DELETE_AUTHOR',
+	ADD_AUTHOR = 'ADD_AUTHOR',
+}

@@ -1,8 +1,7 @@
-import { CSSProperties, FC, FormEvent, ReactElement, useState } from 'react';
+import { CSSProperties, FC, ReactElement, useState } from 'react';
 import './Login.scss';
 import { ERROR, URL_API, noneCRR } from 'src/shared/constants/http';
 import axios from 'axios';
-import { Input } from 'src/common/Input/Input';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,112 +11,128 @@ import { CustomResponseResult } from 'src/shared/models/http';
 import { RoutePath } from 'src/shared/enums/router';
 import { user } from 'src/assets/mocks/user';
 import { User } from 'src/shared/models/user';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {
+	FormLoginValues,
+	initialValues,
+	validationLoginSchema,
+} from 'src/shared/models/login';
+import { useDispatch } from 'react-redux';
+import { addUser } from 'src/store/user/actions';
 
 export const Login: FC = (): ReactElement => {
 	const navigate = useNavigate();
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
-	const [emailError, setEmailError] = useState('');
-	const [passwordError, setPasswordError] = useState('');
+	const dispatch = useDispatch();
 
 	const [requestResult, setRequestResult] =
 		useState<CustomResponseResult>(noneCRR);
 
-	const changeInputEmail = (value: string) => {
-		setEmail(value);
-		setEmailError('');
-		setRequestResult(noneCRR);
-	};
+	const handleSubmit = async (
+		values: FormLoginValues,
+		{ setSubmitting, resetForm }: any
+	) => {
+		try {
+			const response = await axios.post(`${URL_API}/login`, {
+				email: values.email,
+				password: values.password,
+			});
 
-	const changeInputPassword = (value: string) => {
-		setPassword(value);
-		setPasswordError('');
-		setRequestResult(noneCRR);
-	};
+			localStorage.setItem('token', response.data.result);
+			defineUserData(response.data.user);
 
-	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		let isValid = true;
-
-		if (!email) {
-			setEmailError('Email is required');
-			isValid = false;
-		}
-
-		if (!password) {
-			setPasswordError('Password is required');
-			isValid = false;
-		}
-
-		if (isValid) {
-			try {
-				const response = await axios.post(`${URL_API}/login`, {
-					email,
-					password,
-				});
-				setRequestResult({
-					status: CustomResponseStatus.Success,
-					value: LOGIN_FORM.SUCCESS_MESSAGE,
-				});
-
-				localStorage.setItem('token', response.data.result);
-
-				defineUserData(response.data.user);
-
-				navigate(RoutePath.Courses, { replace: true });
-			} catch (error) {
-				console.error(error);
-				setRequestResult({
-					status: CustomResponseStatus.Fail,
-					value: ERROR.MESSAGE,
-				});
-			}
+			resetForm();
+			setSubmitting(false);
+			setRequestResult({
+				status: CustomResponseStatus.Success,
+				value: LOGIN_FORM.SUCCESS_MESSAGE,
+			});
+			navigate(RoutePath.Courses, { replace: true });
+		} catch (error) {
+			setSubmitting(false);
+			setRequestResult({
+				status: CustomResponseStatus.Fail,
+				value: ERROR.MESSAGE,
+			});
 		}
 	};
 
 	const defineUserData = (currentUser: User) => {
-		user.name = currentUser.name;
-		user.isLogin = true;
+		const user = {
+			name: currentUser.name,
+			isAdmin: true,
+			isLogin: true,
+			email: currentUser.email,
+			token: currentUser.token,
+		};
+
+		dispatch(addUser(user));
 	};
 
 	const customButtonStyle: CSSProperties = {
 		width: '40rem',
 	};
 
+	const CustomErrorMessage = ({ name, className }: any) => (
+		<ErrorMessage name={name}>
+			{(msg: string) => <div className={className}>{msg}</div>}
+		</ErrorMessage>
+	);
+
 	return (
 		<div className='login'>
 			<div className='login__title'>{LOGIN_FORM.TITLE}</div>
-			<form className='form-login' onSubmit={handleSubmit}>
-				<Input
-					label='Email:'
-					type='email'
-					error={emailError}
-					placeholder={LOGIN_FORM.PLACEHOLDER}
-					onInputChange={changeInputEmail}
-				/>
-				<Input
-					label='Password:'
-					type='password'
-					error={passwordError}
-					placeholder={LOGIN_FORM.PLACEHOLDER}
-					onInputChange={changeInputPassword}
-				/>
-				<Button
-					text={BUTTON_TEXT.LOGIN}
-					type='submit'
-					style={customButtonStyle}
-				/>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={validationLoginSchema}
+				onSubmit={handleSubmit}
+			>
+				{({ isSubmitting }) => (
+					<Form className='form-login'>
+						<div className='form-login__group'>
+							<label className='form-login__label'>Email:</label>
+							<Field
+								className='form-login__input'
+								type='email'
+								name='email'
+								placeholder='Enter your email'
+							/>
+							<CustomErrorMessage name='email' className='form-login__error' />
+						</div>
 
-				<p className='form-login__message'>
-					{LOGIN_FORM.MESSAGE}
-					<Link className='form-login__link' to={RoutePath.Registration}>
-						<span>Registration</span>
-					</Link>
-				</p>
+						<div className='form-login__group'>
+							<label className='form-login__label'>Password:</label>
+							<Field
+								className='form-login__input'
+								type='password'
+								name='password'
+								placeholder='Enter your password'
+							/>
+							<CustomErrorMessage
+								name='password'
+								className='form-login__error'
+							/>
+						</div>
 
+						<Button
+							type='submit'
+							text={BUTTON_TEXT.LOGIN}
+							className='button'
+							style={customButtonStyle}
+							disabled={isSubmitting}
+						></Button>
+
+						<p className='form-login__message'>
+							Don't have an account?{' '}
+							<Link className='form-login__link' to='/registration'>
+								Register here
+							</Link>
+						</p>
+					</Form>
+				)}
+			</Formik>
+
+			<div className='login__response'>
 				{requestResult.status !== CustomResponseStatus.None && (
 					<p
 						className={
@@ -129,7 +144,7 @@ export const Login: FC = (): ReactElement => {
 						{requestResult.value}
 					</p>
 				)}
-			</form>
+			</div>
 		</div>
 	);
 };

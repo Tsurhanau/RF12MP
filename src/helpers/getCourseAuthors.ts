@@ -1,7 +1,10 @@
-import { mockedAuthorsList } from 'src/assets/mocks/courses';
+import { Author } from 'src/shared/models/author';
 
-export const getCourseAuthors = (authors: string[]): string => {
-	const authorNames = mockedAuthorsList
+export const getCourseAuthors = (
+	authors: string[],
+	authorsList: Author[]
+): string => {
+	const authorNames = authorsList
 		.filter((author) => authors.includes(author.id))
 		.map((author) => author.name);
 
