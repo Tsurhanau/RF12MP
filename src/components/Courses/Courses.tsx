@@ -2,17 +2,31 @@ import './Courses.scss';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { Course, CourseProps } from 'src/shared/models/course';
 import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourseList';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { SearchBar } from 'src/common/SearchBar/SearchBar';
 import { Button } from 'src/common/Button/Button';
 import { BUTTON_TEXT } from 'src/shared/constants/button';
 import { useNavigate } from 'react-router-dom';
 import { RoutePath } from 'src/shared/enums/router';
+import { useSelector } from 'react-redux';
+import { getUserAsync } from 'src/store/user/thunk';
+import { useAppDispatch } from 'src/hooks/dispatch';
+import { getUser } from 'src/store/user/selectors';
+import { getCoursesAsync } from 'src/store/courses/thunk';
 
 export const Courses: React.FC<CourseProps> = ({
 	courses,
 }: CourseProps): ReactElement => {
 	const navigate = useNavigate();
+
+	const user = useSelector(getUser);
+
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(getUserAsync());
+		dispatch(getCoursesAsync());
+	}, [dispatch]);
 
 	const [filterCourses, setFilterCourses] = useState<Course[] | null>(null);
 
@@ -70,7 +84,11 @@ export const Courses: React.FC<CourseProps> = ({
 		<div className='courses'>
 			<div className='courses__section-1'>
 				<SearchBar onSubmitSearch={onSubmitSearch} />
-				<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
+				{user.isAdmin ? (
+					<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
+				) : (
+					''
+				)}
 			</div>
 			{renderCourseList()}
 		</div>

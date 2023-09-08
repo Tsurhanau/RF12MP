@@ -10,4 +10,5 @@ export const BUTTON_TEXT = {
 	CREATE_AUTHOR: 'create author',
 	CANCEL: 'Cancel',
 	CREATE_COURSE: 'Create course',
+	UPDATE_COURSE: 'Update course',
 };

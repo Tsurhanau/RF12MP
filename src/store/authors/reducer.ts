@@ -1,13 +1,16 @@
 import { Author } from 'src/shared/models/author';
-import { Action } from './actions';
+import { Action } from './action.interfaces';
 import { ActionTypes } from './types';
+import { CustomEntityState } from 'src/shared/models/entity-state';
 
-interface AuthorsState {
+interface AuthorsState extends CustomEntityState {
 	authors: Author[];
 }
 
 const initialState: AuthorsState = {
 	authors: [],
+	isLoading: false,
+	error: '',
 };
 
 export const authorsReducer = (
@@ -15,11 +18,22 @@ export const authorsReducer = (
 	action: Action
 ): AuthorsState => {
 	switch (action.type) {
-		case ActionTypes.ADD_AUTHOR:
-			console.log('work ADD_AUTHOR', action.payload.author);
+		case ActionTypes.CREATE_AUTHOR:
+			return {
+				...state,
+				isLoading: true,
+			};
+		case ActionTypes.CREATE_AUTHORS_SUCCESS:
 			return {
 				...state,
 				authors: [...state.authors, action.payload.author],
+				isLoading: false,
+			};
+		case ActionTypes.CREATE_AUTHORS_FAILURE:
+			return {
+				...state,
+				isLoading: false,
+				error: action.payload.error,
 			};
 		case ActionTypes.DELETE_AUTHOR:
 			return {
@@ -29,10 +43,26 @@ export const authorsReducer = (
 				),
 			};
 		case ActionTypes.LOAD_AUTHORS:
-			console.log('work LOAD_AUTHORS', action.payload.authors);
 			return {
 				...state,
 				authors: action.payload.authors,
+			};
+		case ActionTypes.FETCH_AUTHORS:
+			return {
+				...state,
+				isLoading: true,
+			};
+		case ActionTypes.FETCH_AUTHORS_SUCCESS:
+			return {
+				...state,
+				authors: action.payload.authors,
+				isLoading: false,
+			};
+		case ActionTypes.FETCH_AUTHORS_FAILURE:
+			return {
+				...state,
+				isLoading: false,
+				error: action.payload.error,
 			};
 		default:
 			return state;

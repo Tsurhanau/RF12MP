@@ -9,7 +9,6 @@ import { LOGIN_FORM } from 'src/shared/constants/login';
 import { CustomResponseStatus } from 'src/shared/enums/http';
 import { CustomResponseResult } from 'src/shared/models/http';
 import { RoutePath } from 'src/shared/enums/router';
-import { user } from 'src/assets/mocks/user';
 import { User } from 'src/shared/models/user';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
@@ -63,7 +62,6 @@ export const Login: FC = (): ReactElement => {
 			isAdmin: true,
 			isLogin: true,
 			email: currentUser.email,
-			token: currentUser.token,
 		};
 
 		dispatch(addUser(user));

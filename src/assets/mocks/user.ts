@@ -5,5 +5,4 @@ export const user: User = {
 	isAdmin: false,
 	isLogin: true,
 	email: '',
-	token: '',
 };
