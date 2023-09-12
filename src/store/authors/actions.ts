@@ -1,34 +1,46 @@
 import { Author } from 'src/shared/models/author';
 import { ActionTypes } from './types';
+import {
+	CreateAuthorAction,
+	CreateAuthorFailureAction,
+	CreateAuthorSuccessAction,
+	FetchAuthorsAction,
+	FetchAuthorsFailureAction,
+	FetchAuthorsSuccessAction,
+	LoadAuthorsAction,
+	RemoveAuthorAction,
+} from './action.interfaces';
 
-interface LoadAuthorsAction {
-	type: ActionTypes.LOAD_AUTHORS;
-	payload: { authors: Author[] };
-}
-
-export const loadAuthors = (authors: Author[]) => {
+export const loadAuthors = (authors: Author[]): LoadAuthorsAction => {
 	return {
 		type: ActionTypes.LOAD_AUTHORS,
 		payload: { authors: authors },
 	};
 };
 
-interface AddAuthorAction {
-	type: ActionTypes.ADD_AUTHOR;
-	payload: { author: Author };
-}
-
-export const addAuthor = (author: Author) => {
+export const createAuthor = (): CreateAuthorAction => {
 	return {
-		type: ActionTypes.ADD_AUTHOR,
+		type: ActionTypes.CREATE_AUTHOR,
+	};
+};
+
+export const createAuthorSuccess = (
+	author: Author
+): CreateAuthorSuccessAction => {
+	return {
+		type: ActionTypes.CREATE_AUTHORS_SUCCESS,
 		payload: { author: author },
 	};
 };
 
-interface RemoveAuthorAction {
-	type: ActionTypes.DELETE_AUTHOR;
-	payload: { id: string };
-}
+export const createAuthorFailure = (
+	error: string
+): CreateAuthorFailureAction => {
+	return {
+		type: ActionTypes.CREATE_AUTHORS_FAILURE,
+		payload: { error: error },
+	};
+};
 
 export const removeAuthor = (id: string): RemoveAuthorAction => {
 	return {
@@ -37,4 +49,26 @@ export const removeAuthor = (id: string): RemoveAuthorAction => {
 	};
 };
 
-export type Action = AddAuthorAction | RemoveAuthorAction | LoadAuthorsAction;
+export const fetchAuthors = (): FetchAuthorsAction => {
+	return {
+		type: ActionTypes.FETCH_AUTHORS,
+	};
+};
+
+export const fetchAuthorsSuccess = (
+	authors: Author[]
+): FetchAuthorsSuccessAction => {
+	return {
+		type: ActionTypes.FETCH_AUTHORS_SUCCESS,
+		payload: { authors: authors },
+	};
+};
+
+export const fetchAuthorsFailure = (
+	error: string
+): FetchAuthorsFailureAction => {
+	return {
+		type: ActionTypes.FETCH_AUTHORS_FAILURE,
+		payload: { error: error },
+	};
+};

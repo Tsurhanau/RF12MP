@@ -1,7 +1,14 @@
-import './CreateCourse.scss';
+import './CourseForm.scss';
 import nextId from 'react-id-generator';
-import { CSSProperties, FC, FormEvent, ReactElement, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {
+	CSSProperties,
+	FC,
+	FormEvent,
+	ReactElement,
+	useEffect,
+	useState,
+} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from 'src/common/Button/Button';
 import { Input } from 'src/common/Input/Input';
 import { Textarea } from 'src/common/Textarea/Textarea';
@@ -20,17 +27,29 @@ import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { hasMinLength } from 'src/helpers/hasMinLength';
 import { Course } from 'src/shared/models/course';
 import { getCurrentDate } from 'src/helpers/getCurrentDate';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getAuthors } from 'src/store/authors/selectors';
-import { addAuthor } from 'src/store/authors/actions';
-import { addCourse } from 'src/store/courses/actions';
+import { getCourses } from 'src/store/courses/selectors';
+import { useAppDispatch } from 'src/hooks/dispatch';
+import { createCourseAsync, updateCourseAsync } from 'src/store/courses/thunk';
+import { createAuthorAsync } from 'src/store/authors/thunk';
 
-export const CreateCourse: FC = (): ReactElement => {
+export const CourseForm: FC = (): ReactElement => {
 	const navigate = useNavigate();
+
+	const { courseId } = useParams();
+
+	const courses = useSelector(getCourses);
+
+	const [course, setCourse] = useState(
+		courses.find((course) => course.id === courseId)
+	);
+
+	const [isUpdateMood, setIsUpdateMood] = useState<boolean>(false);
 
 	const authorsAll = useSelector(getAuthors);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [durationValue, setDurationValue] = useState(
 		getCourseDuration(INITIAL_DURATION)
@@ -51,6 +70,20 @@ export const CreateCourse: FC = (): ReactElement => {
 
 	const [requestResult, setRequestResult] =
 		useState<CustomResponseResult>(noneCRR);
+
+	useEffect(() => {
+		if (course) {
+			setUpdateFormValues(course);
+		}
+	}, [courseId]);
+
+	const setUpdateFormValues = (course: Course) => {
+		setIsUpdateMood(true);
+		setTitle(course.title);
+		setDescription(course.description);
+		setDuration(course.duration.toString());
+		changeDurationValue(course.duration.toString());
+	};
 
 	const changeTitle = (value: string) => {
 		setTitle(value);
@@ -90,16 +123,17 @@ export const CreateCourse: FC = (): ReactElement => {
 	const createAuthor = (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		if (isAuthorNameValid()) {
-			const newAuthor: Author = {
-				id: nextId(),
-				name: authorName,
-			};
-			dispatch(addAuthor(newAuthor));
-			setAuthorName('');
-		} else {
+		if (!isAuthorNameValid()) {
 			validateAuthorName();
+			return;
 		}
+
+		const newAuthor: Author = {
+			id: nextId(),
+			name: authorName,
+		};
+		dispatch(createAuthorAsync(newAuthor));
+		setAuthorName('');
 	};
 
 	const isAuthorNameValid = (): boolean => {
@@ -123,24 +157,33 @@ export const CreateCourse: FC = (): ReactElement => {
 	const submitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const isFormValidate = isFormValid();
-
-		if (isFormValidate) {
-			const course: Course = {
-				id: nextId(),
-				title: title,
-				description: description,
-				creationDate: getCurrentDate(),
-				duration: +duration,
-				authors: courseAuthors.map((courseAuthor) => courseAuthor.id),
-			};
-
-			dispatch(addCourse(course));
-
-			navigate(RoutePath.Courses, { replace: true });
-		} else {
+		if (!isFormValid()) {
 			setFormErrors();
+			return;
 		}
+
+		const courseReq: Course = getPreparedCourseObj();
+
+		if (!isUpdateMood) {
+			dispatch(createCourseAsync(courseReq));
+		} else {
+			course
+				? dispatch(updateCourseAsync(course.id, courseReq))
+				: console.log('Course Id is not valid');
+		}
+
+		navigate(RoutePath.Courses, { replace: true });
+	};
+
+	const getPreparedCourseObj = (): Course => {
+		return {
+			id: nextId(),
+			title: title,
+			description: description,
+			creationDate: getCurrentDate(),
+			duration: +duration,
+			authors: courseAuthors.map((courseAuthor) => courseAuthor.id),
+		};
 	};
 
 	const isTitleValid = (): boolean => {
@@ -263,11 +306,13 @@ export const CreateCourse: FC = (): ReactElement => {
 					type='text'
 					error={titleError}
 					placeholder={CREATE_COURSE_FORM.PLACEHOLDER}
+					value={title}
 					onInputChange={changeTitle}
 				/>
 				<Textarea
 					label='Description:'
 					error={descriptionError}
+					value={description}
 					placeholder={CREATE_COURSE_FORM.PLACEHOLDER}
 					style={customDescriptionStyle}
 					onTextareaChange={changeDescription}
@@ -284,6 +329,7 @@ export const CreateCourse: FC = (): ReactElement => {
 					<Input
 						label='Duration'
 						type='number'
+						value={duration}
 						min='1'
 						step='1'
 						error={durationError}
@@ -392,7 +438,9 @@ export const CreateCourse: FC = (): ReactElement => {
 				<Button
 					form='create-course-form'
 					type='submit'
-					text={BUTTON_TEXT.CREATE_COURSE}
+					text={
+						isUpdateMood ? BUTTON_TEXT.UPDATE_COURSE : BUTTON_TEXT.CREATE_COURSE
+					}
 					style={customButtonStyle}
 				/>
 			</div>

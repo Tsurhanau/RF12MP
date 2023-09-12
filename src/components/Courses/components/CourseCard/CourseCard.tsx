@@ -6,9 +6,13 @@ import { getCourseDuration } from 'src/helpers/getCourseDuration';
 import { getCourseAuthors } from 'src/helpers/getCourseAuthors';
 import { getCourseCreationDate } from 'src/helpers/getCourseCreationDate';
 import { FC, ReactElement } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeCourses } from 'src/store/courses/actions';
+import { useSelector } from 'react-redux';
 import { getAuthors } from 'src/store/authors/selectors';
+import { getUser } from 'src/store/user/selectors';
+import { useAppDispatch } from 'src/hooks/dispatch';
+import { deleteCourseAsync } from 'src/store/courses/thunk';
+import { useNavigate } from 'react-router-dom';
+import { RoutePath } from 'src/shared/enums/router';
 
 export const CourseCard: FC<CourseCardProps> = ({
 	card,
@@ -16,18 +20,22 @@ export const CourseCard: FC<CourseCardProps> = ({
 }: CourseCardProps): ReactElement => {
 	const authors = useSelector(getAuthors);
 
-	const dispatch = useDispatch();
+	const user = useSelector(getUser);
+
+	const dispatch = useAppDispatch();
+
+	const navigate = useNavigate();
 
 	const showCourse = (): void => {
 		openCardInfo(card);
 	};
 
 	const editCourse = (): void => {
-		console.log('editCourse');
+		navigate(`${RoutePath.Courses}/update/${card.id}`);
 	};
 
 	const deleteCourse = (): void => {
-		dispatch(removeCourses(card.id));
+		dispatch(deleteCourseAsync(card.id));
 	};
 
 	return (
@@ -45,8 +53,14 @@ export const CourseCard: FC<CourseCardProps> = ({
 					</ul>
 					<div className='card__buttons'>
 						<Button text={BUTTON_TEXT.SHOW_COURSE} onClick={showCourse} />
-						<Button text={BUTTON_TEXT.EDIT} onClick={editCourse} />
-						<Button text={BUTTON_TEXT.DELETE} onClick={deleteCourse} />
+						{user.isAdmin ? (
+							<div>
+								<Button text={BUTTON_TEXT.EDIT} onClick={editCourse} />
+								<Button text={BUTTON_TEXT.DELETE} onClick={deleteCourse} />
+							</div>
+						) : (
+							''
+						)}
 					</div>
 				</div>
 			</div>
