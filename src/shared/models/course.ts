@@ -1,3 +1,5 @@
+import { Author } from './author';
+
 export interface Course {
 	id: string;
 	title: string;
@@ -9,10 +11,12 @@ export interface Course {
 
 export interface CourseProps {
 	courses?: Course[];
+	authors: Author[];
 }
 
 export interface CourseCardProps {
 	card: Course;
+	authors: Author[];
 	openCardInfo: (card: Course) => void;
 }
 

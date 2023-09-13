@@ -411,7 +411,7 @@ export const CourseForm: FC = (): ReactElement => {
 	};
 
 	return (
-		<div className='create-course'>
+		<div className='create-course' data-testid='course-form'>
 			<div className='create-course__title'>
 				<h2>{CREATE_COURSE_FORM.TITLE}</h2>
 			</div>

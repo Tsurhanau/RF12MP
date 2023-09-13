@@ -16,6 +16,7 @@ import { getCoursesAsync } from 'src/store/courses/thunk';
 
 export const Courses: React.FC<CourseProps> = ({
 	courses,
+	authors,
 }: CourseProps): ReactElement => {
 	const navigate = useNavigate();
 
@@ -61,6 +62,7 @@ export const Courses: React.FC<CourseProps> = ({
 					? filterCourses?.map((card: Course) => (
 							<CourseCard
 								key={card.id}
+								authors={authors}
 								card={card}
 								openCardInfo={openCourseInfo}
 							/>
@@ -68,6 +70,7 @@ export const Courses: React.FC<CourseProps> = ({
 					: courses?.map((card: Course) => (
 							<CourseCard
 								key={card.id}
+								authors={authors}
 								card={card}
 								openCardInfo={openCourseInfo}
 							/>
@@ -85,7 +88,11 @@ export const Courses: React.FC<CourseProps> = ({
 			<div className='courses__section-1'>
 				<SearchBar onSubmitSearch={onSubmitSearch} />
 				{user.isAdmin ? (
-					<Button text={BUTTON_TEXT.ADD_NEW_COURSE} onClick={addNewCourse} />
+					<Button
+						text={BUTTON_TEXT.ADD_NEW_COURSE}
+						testId='add-button'
+						onClick={addNewCourse}
+					/>
 				) : (
 					''
 				)}

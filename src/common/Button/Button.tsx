@@ -7,9 +7,11 @@ export const Button: FC<CustomButtonProps> = ({
 	onClick,
 	style,
 	type,
+	testId,
 	...rest
 }) => (
 	<button
+		data-testid={testId}
 		className='button'
 		style={style}
 		onClick={onClick}

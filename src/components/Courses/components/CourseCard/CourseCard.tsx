@@ -17,9 +17,8 @@ import { RoutePath } from 'src/shared/enums/router';
 export const CourseCard: FC<CourseCardProps> = ({
 	card,
 	openCardInfo,
+	authors,
 }: CourseCardProps): ReactElement => {
-	const authors = useSelector(getAuthors);
-
 	const user = useSelector(getUser);
 
 	const dispatch = useAppDispatch();
@@ -39,12 +38,14 @@ export const CourseCard: FC<CourseCardProps> = ({
 	};
 
 	return (
-		<div className='card'>
+		<div className='card' data-testid='course-card'>
 			<div className='card__title'>
 				<h3>{card.title}</h3>
 			</div>
 			<div className='card__content'>
-				<p className='card__text'>{card.description}</p>
+				<p className='card__text' data-testid='course-description'>
+					{card.description}
+				</p>
 				<div className='card__section-1'>
 					<ul className='card__info'>
 						<li>Authors: {getCourseAuthors(card.authors, authors)}</li>
