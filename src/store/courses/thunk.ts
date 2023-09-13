@@ -19,7 +19,7 @@ import {
 	updateCoursesFailure,
 	updateCoursesSuccess,
 } from './actions';
-import { Course } from 'src/shared/models/course';
+import { CourseRequest } from 'src/shared/models/course';
 
 export const getCoursesAsync = () => {
 	return async (dispatch: Dispatch) => {
@@ -47,12 +47,12 @@ export const deleteCourseAsync = (id: string) => {
 	};
 };
 
-export const createCourseAsync = (course: Course) => {
+export const createCourseAsync = (course: CourseRequest) => {
 	return async (dispatch: Dispatch) => {
 		dispatch(createCourse());
 		createCourseAPI(course)
-			.then(() => {
-				dispatch(createCourseSuccess(course));
+			.then((res) => {
+				dispatch(createCourseSuccess(res.data.result));
 			})
 			.catch(() => {
 				dispatch(createCourseFailure('Error logout user'));
@@ -60,12 +60,12 @@ export const createCourseAsync = (course: Course) => {
 	};
 };
 
-export const updateCourseAsync = (id: string, course: Course) => {
+export const updateCourseAsync = (id: string, course: CourseRequest) => {
 	return async (dispatch: Dispatch) => {
 		dispatch(updateCourse());
 		updateCourseAPI(id, course)
 			.then((res) => {
-				dispatch(updateCoursesSuccess(res.data));
+				dispatch(updateCoursesSuccess(res.data.result));
 			})
 			.catch(() => {
 				dispatch(updateCoursesFailure('Error logout user'));

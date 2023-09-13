@@ -7,7 +7,6 @@ import { getCourseAuthors } from 'src/helpers/getCourseAuthors';
 import { getCourseCreationDate } from 'src/helpers/getCourseCreationDate';
 import { FC, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import { getAuthors } from 'src/store/authors/selectors';
 import { getUser } from 'src/store/user/selectors';
 import { useAppDispatch } from 'src/hooks/dispatch';
 import { deleteCourseAsync } from 'src/store/courses/thunk';

@@ -1,12 +1,15 @@
 import { Author } from './author';
 
-export interface Course {
-	id: string;
+export interface CourseRequest {
 	title: string;
 	description: string;
 	creationDate: string;
 	duration: number;
 	authors: string[];
+}
+
+export interface Course extends CourseRequest {
+	id: string;
 }
 
 export interface CourseProps {

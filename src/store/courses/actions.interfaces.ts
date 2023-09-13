@@ -54,7 +54,7 @@ export interface UpdateCoursesAction {
 
 export interface UpdateCoursesSuccessAction {
 	type: ActionTypes.UPDATE_COURSE_SUCCESS;
-	payload: { courses: Course[] };
+	payload: { course: Course };
 }
 
 export interface UpdateCoursesFailureAction {
