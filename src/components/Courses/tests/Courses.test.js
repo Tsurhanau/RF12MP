@@ -83,10 +83,6 @@ describe('Courses Component', () => {
 		userEvent.click(buttonElement);
 
 		await act(async () => {
-			fireEvent.click(buttonElement);
-		});
-
-		await waitFor(() => {
 			expect(navigateMock).toHaveBeenCalledWith('/courses/add');
 		});
 	});
