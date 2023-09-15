@@ -1,5 +1,4 @@
 import './CourseForm.scss';
-import nextId from 'react-id-generator';
 import {
 	CSSProperties,
 	FC,
@@ -21,11 +20,11 @@ import { CREATE_COURSE_FORM } from 'src/shared/constants/create-course';
 import { noneCRR } from 'src/shared/constants/http';
 import { CustomResponseStatus } from 'src/shared/enums/http';
 import { RoutePath } from 'src/shared/enums/router';
-import { Author } from 'src/shared/models/author';
+import { Author, AuthorRequest } from 'src/shared/models/author';
 import { CustomResponseResult } from 'src/shared/models/http';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { hasMinLength } from 'src/helpers/hasMinLength';
-import { Course } from 'src/shared/models/course';
+import { Course, CourseRequest } from 'src/shared/models/course';
 import { getCurrentDate } from 'src/helpers/getCurrentDate';
 import { useSelector } from 'react-redux';
 import { getAuthors } from 'src/store/authors/selectors';
@@ -128,12 +127,17 @@ export const CourseForm: FC = (): ReactElement => {
 			return;
 		}
 
-		const newAuthor: Author = {
-			id: nextId(),
+		const authorReq = getPreparedAuthorObj();
+
+		dispatch(createAuthorAsync(authorReq));
+
+		setAuthorName('');
+	};
+
+	const getPreparedAuthorObj = (): AuthorRequest => {
+		return {
 			name: authorName,
 		};
-		dispatch(createAuthorAsync(newAuthor));
-		setAuthorName('');
 	};
 
 	const isAuthorNameValid = (): boolean => {
@@ -162,22 +166,23 @@ export const CourseForm: FC = (): ReactElement => {
 			return;
 		}
 
-		const courseReq: Course = getPreparedCourseObj();
+		const courseReq: CourseRequest = getPreparedCourseObj();
 
 		if (!isUpdateMood) {
 			dispatch(createCourseAsync(courseReq));
 		} else {
-			course
-				? dispatch(updateCourseAsync(course.id, courseReq))
-				: console.log('Course Id is not valid');
+			if (course) {
+				dispatch(updateCourseAsync(course.id, courseReq));
+			} else {
+				console.log('Course Id is not valid');
+			}
 		}
 
 		navigate(RoutePath.Courses, { replace: true });
 	};
 
-	const getPreparedCourseObj = (): Course => {
+	const getPreparedCourseObj = (): CourseRequest => {
 		return {
-			id: nextId(),
 			title: title,
 			description: description,
 			creationDate: getCurrentDate(),
@@ -411,7 +416,7 @@ export const CourseForm: FC = (): ReactElement => {
 	};
 
 	return (
-		<div className='create-course'>
+		<div className='create-course' data-testid='course-form'>
 			<div className='create-course__title'>
 				<h2>{CREATE_COURSE_FORM.TITLE}</h2>
 			</div>

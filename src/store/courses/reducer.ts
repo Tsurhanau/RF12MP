@@ -85,7 +85,12 @@ export const coursesReducer = (
 		case ActionTypes.UPDATE_COURSE_SUCCESS:
 			return {
 				...state,
-				courses: action.payload.courses,
+				courses: state.courses.map((course) => {
+					if (course.id === action.payload.course.id) {
+						return action.payload.course;
+					}
+					return course;
+				}),
 				isLoading: false,
 			};
 		case ActionTypes.UPDATE_COURSE_FAILURE:

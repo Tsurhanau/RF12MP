@@ -11,9 +11,12 @@ import { useSelector } from 'react-redux';
 import { getCourses } from './store/courses/selectors';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { useInitialDataFetching } from './hooks/useInitialDataFetching';
+import { getAuthors } from './store/authors/selectors';
 
 export const App = () => {
 	const courses = useSelector(getCourses);
+
+	const authors = useSelector(getAuthors);
 
 	useInitialDataFetching();
 
@@ -23,7 +26,7 @@ export const App = () => {
 				<Routes>
 					<Route
 						path={RoutePath.Courses}
-						element={<Courses courses={courses} />}
+						element={<Courses authors={authors} courses={courses} />}
 					/>
 					<Route
 						path={`${RoutePath.Courses}/:courseId`}

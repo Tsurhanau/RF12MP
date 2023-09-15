@@ -100,11 +100,11 @@ export const updateCourse = (): UpdateCoursesAction => {
 };
 
 export const updateCoursesSuccess = (
-	courses: Course[]
+	course: Course
 ): UpdateCoursesSuccessAction => {
 	return {
 		type: ActionTypes.UPDATE_COURSE_SUCCESS,
-		payload: { courses: courses },
+		payload: { course: course },
 	};
 };
 

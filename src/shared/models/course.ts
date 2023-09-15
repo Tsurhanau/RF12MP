@@ -1,5 +1,6 @@
-export interface Course {
-	id: string;
+import { Author } from './author';
+
+export interface CourseRequest {
 	title: string;
 	description: string;
 	creationDate: string;
@@ -7,12 +8,18 @@ export interface Course {
 	authors: string[];
 }
 
+export interface Course extends CourseRequest {
+	id: string;
+}
+
 export interface CourseProps {
 	courses?: Course[];
+	authors: Author[];
 }
 
 export interface CourseCardProps {
 	card: Course;
+	authors: Author[];
 	openCardInfo: (card: Course) => void;
 }
 

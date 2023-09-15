@@ -1,6 +1,10 @@
 import { FormEvent } from 'react';
 
-export interface Author {
+export interface AuthorRequest {
+	name: string;
+}
+
+export interface Author extends AuthorRequest {
 	id: string;
 	name: string;
 }

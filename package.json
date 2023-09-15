@@ -29,13 +29,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "eslint": "eslint --ext .ts --ext .tsx src",
     "eslint:fix": "eslint --fix --ext .ts --ext .tsx src",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
-    "prepublish": "npm run eslint:fix"
+    "prepublish": "npm run eslint:fix && npm run test:nowatch"
   },
   "eslintConfig": {
     "extends": [
@@ -70,5 +70,10 @@
     "prettier": "^3.0.1",
     "redux-devtools-extension": "^2.13.9",
     "typescript": "^5.1.6"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   }
 }
